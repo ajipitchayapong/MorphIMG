@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useImageStore, type ImageFormat } from "@/lib/image-store";
 import { cn } from "@/lib/utils";
 import { findOptimalQuality } from "@/lib/image-converter";
@@ -92,6 +92,8 @@ export function ConversionSettings() {
     });
   };
 
+  const [estimatedSize, setEstimatedSize] = useState<number | null>(null);
+
   // Real-time quality estimation based on target file size
   useEffect(() => {
     if (
@@ -100,6 +102,7 @@ export function ConversionSettings() {
       isConverting ||
       !targetFile
     ) {
+      setEstimatedSize(null);
       return;
     }
 
@@ -149,9 +152,6 @@ export function ConversionSettings() {
               ? "image/jpeg"
               : `image/${settings.outputFormat}`;
           const targetBytes = (settings.targetFileSize || 0) * 1024;
-          console.log(
-            `[UI Estimation] Target: ${settings.targetFileSize}KB, Mime: ${mimeType}`,
-          );
 
           const result = await findOptimalQuality(
             canvas,
@@ -159,15 +159,16 @@ export function ConversionSettings() {
             targetBytes,
           );
           const newQuality = Math.round(result.quality * 100);
-          console.log(`[UI Estimation] Result Quality: ${newQuality}%`);
 
-          // Only update if quality actually changed to avoid infinite loops
+          setEstimatedSize(result.blob.size);
+
           if (newQuality !== settings.quality) {
             updateSettings({ quality: newQuality });
           }
         }
       } catch (error) {
         console.error("Estimation failed", error);
+        setEstimatedSize(null);
       } finally {
         setIsEstimating(false);
       }
@@ -181,7 +182,8 @@ export function ConversionSettings() {
     settings.resizeHeight,
     settings.outputFormat,
     settings.resizeMode,
-    settings.quality, // Watch quality primitives to detect when we've reached target
+    // Remove settings.quality from dependency to avoid loop when we calculate it ourselves
+    // We only want to re-calculate if the TARGET changes, not if the RESULT changes
     targetFile?.id,
     targetFile?.preview,
     updateSettings,
@@ -312,27 +314,53 @@ export function ConversionSettings() {
                     {isEstimating && (
                       <Loader2 className="w-3 h-3 animate-spin text-primary/60" />
                     )}
-                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <span
+                      className={cn(
+                        "text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1",
+                        settings.targetFileSize
+                          ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                          : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+                      )}
+                    >
                       <span className="opacity-70 uppercase tracking-tighter">
-                        Quality
+                        {settings.targetFileSize ? "Auto" : "Quality"}
                       </span>
                       {settings.quality}%
                     </span>
                   </div>
                 </div>
-                <Slider
-                  value={[settings.quality]}
-                  onValueChange={([value]) =>
-                    updateSettings({ quality: value })
-                  }
-                  min={1}
-                  max={100}
-                  step={1}
-                  className="w-full"
-                />
+                <div className="relative">
+                  <Slider
+                    disabled={settings.targetFileSize !== null}
+                    value={[settings.quality]}
+                    onValueChange={([value]) =>
+                      updateSettings({ quality: value })
+                    }
+                    min={1}
+                    max={100}
+                    step={1}
+                    className={cn(
+                      "w-full transition-opacity duration-200",
+                      settings.targetFileSize !== null && "opacity-50",
+                    )}
+                  />
+                  {settings.targetFileSize !== null && (
+                    <div className="absolute inset-0 z-10 cursor-not-allowed flex items-center justify-center">
+                      <span className="text-[10px] font-medium bg-background/80 backdrop-blur-sm px-2 py-0.5 rounded-md border border-border shadow-sm text-muted-foreground">
+                        Quality auto-adjusted for size
+                      </span>
+                    </div>
+                  )}
+                </div>
                 <div className="flex justify-between text-[10px] text-muted-foreground">
                   <span>Smaller File</span>
-                  <span>Better Quality</span>
+                  {settings.quality === 100 ? (
+                    <span className="text-emerald-500 font-bold animate-pulse">
+                      Maximum Quality
+                    </span>
+                  ) : (
+                    <span>Better Quality</span>
+                  )}
                 </div>
               </div>
             ) : (
@@ -353,12 +381,19 @@ export function ConversionSettings() {
                   </Label>
                   <Switch
                     checked={settings.targetFileSize !== null}
+                    disabled={!isLossyFormat}
                     onCheckedChange={(checked) =>
                       updateSettings({ targetFileSize: checked ? 500 : null })
                     }
                   />
                 </div>
-                {settings.targetFileSize !== null && (
+                {!isLossyFormat && (
+                  <p className="text-[10px] text-muted-foreground mt-1">
+                    Target size is only available for lossy formats (JPG, WebP,
+                    AVIF). For PNG, try resizing the image.
+                  </p>
+                )}
+                {isLossyFormat && settings.targetFileSize !== null && (
                   <div className="flex items-center gap-2 animate-in fade-in slide-in-from-top-1 duration-200">
                     <Input
                       type="number"
@@ -375,6 +410,30 @@ export function ConversionSettings() {
                     <span className="text-xs text-muted-foreground font-medium">
                       KB
                     </span>
+                  </div>
+                )}
+                {settings.targetFileSize !== null && (
+                  <div className="flex justify-end">
+                    {isEstimating ? (
+                      <span className="text-[10px] text-muted-foreground animate-pulse">
+                        Calculating best quality...
+                      </span>
+                    ) : estimatedSize ? (
+                      <span className="text-[10px] text-muted-foreground">
+                        Est:{" "}
+                        <span
+                          className={cn(
+                            "font-bold",
+                            estimatedSize >
+                              (settings.targetFileSize || 0) * 1024
+                              ? "text-amber-500"
+                              : "text-emerald-500",
+                          )}
+                        >
+                          {(estimatedSize / 1024).toFixed(1)} KB
+                        </span>
+                      </span>
+                    ) : null}
                   </div>
                 )}
               </div>

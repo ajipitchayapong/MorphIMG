@@ -100,6 +100,64 @@ export const findOptimalQuality = async (
   return { blob: bestBlob, quality: bestQuality };
 };
 
+// Fast convolution-based sharpening
+const applySharpenFilter = (
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  mix: number,
+) => {
+  const weights = [0, -1, 0, -1, 5, -1, 0, -1, 0];
+  const katet = Math.round(Math.sqrt(weights.length));
+  const half = (katet * 0.5) | 0;
+  const dstData = ctx.createImageData(w, h);
+  const dstBuff = dstData.data;
+  const srcBuff = ctx.getImageData(0, 0, w, h).data;
+  let y = h;
+
+  while (y--) {
+    const yk = y;
+    let x = w;
+    while (x--) {
+      const xk = x;
+      const srcOff = (y * w + x) * 4;
+      const dstOff = (y * w + x) * 4;
+      let r = 0,
+        g = 0,
+        b = 0,
+        a = 0;
+
+      for (let cy = 0; cy < katet; cy++) {
+        const sy = yk - half + cy;
+        const addY = sy * w;
+        for (let cx = 0; cx < katet; cx++) {
+          const sx = xk - half + cx;
+          const sy = y + cy - half;
+          const sx2 = x + cx - half;
+
+          if (sy >= 0 && sy < h && sx2 >= 0 && sx2 < w) {
+            const scy = sy;
+            const scx = sx2;
+            const srcOff = (scy * w + scx) * 4;
+            const wt = weights[cy * katet + cx];
+            r += srcBuff[srcOff] * wt;
+            g += srcBuff[srcOff + 1] * wt;
+            b += srcBuff[srcOff + 2] * wt;
+            a += srcBuff[srcOff + 3] * wt;
+          }
+        }
+      }
+
+      dstBuff[dstOff] = r * mix + srcBuff[srcOff] * (1 - mix);
+      dstBuff[dstOff + 1] = g * mix + srcBuff[srcOff + 1] * (1 - mix);
+      dstBuff[dstOff + 2] = b * mix + srcBuff[srcOff + 2] * (1 - mix);
+      dstBuff[dstOff + 3] = srcBuff[srcOff + 3];
+    }
+  }
+
+  ctx.putImageData(dstData, 0, 0);
+};
+
 const convertSingleImage = async (
   file: File,
   settings: {
@@ -159,7 +217,20 @@ const convertSingleImage = async (
         ctx.fillRect(0, 0, targetWidth, targetHeight);
       }
 
+      // Higher quality interpolation
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
       ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+      // Apply Smart Sharpen if Upscaling
+      // We consider it an upscale if the target area is larger than original area
+      const originalArea = img.width * img.height;
+      const targetArea = targetWidth * targetHeight;
+
+      if (targetArea > originalArea) {
+        console.log("Upscaling detected, applying Smart Sharpen...");
+        applySharpenFilter(ctx, targetWidth, targetHeight, 0.8); // Increased strength
+      }
 
       const mimeType = getMimeType(settings.outputFormat);
 
@@ -171,12 +242,35 @@ const convertSingleImage = async (
           mimeType,
           targetBytes,
         );
+
+        // CHECK: Did the browser actually give us AVIF?
+        if (settings.outputFormat === "avif" && blob.type !== "image/avif") {
+          reject(
+            new Error(
+              "Browser silently fell back to PNG. AVIF encoding is not supported.",
+            ),
+          );
+          return;
+        }
+
         resolve({ blob, width: targetWidth, height: targetHeight });
       } else {
         const quality = settings.quality / 100;
         canvas.toBlob(
           (blob) => {
             if (blob) {
+              // CHECK: Did the browser actually give us AVIF?
+              if (
+                settings.outputFormat === "avif" &&
+                blob.type !== "image/avif"
+              ) {
+                reject(
+                  new Error(
+                    "Browser silently fell back to PNG. AVIF encoding is not supported.",
+                  ),
+                );
+                return;
+              }
               resolve({ blob, width: targetWidth, height: targetHeight });
             } else {
               reject(new Error("Failed to convert image"));

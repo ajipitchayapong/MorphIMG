@@ -179,14 +179,16 @@ export function FileList() {
                     </span>
                   )}
 
-                  {file.settings.quality < 100 && (
-                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.25 rounded flex items-center gap-1">
-                      <span className="opacity-70 uppercase tracking-tighter text-[8px]">
-                        Quality
-                      </span>
-                      {file.settings.quality}%
+                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.25 rounded flex items-center gap-1">
+                    <span className="opacity-70 uppercase tracking-tighter text-[8px]">
+                      Quality
                     </span>
-                  )}
+                    {file.settings.targetFileSize !== null ? (
+                      "AUTO"
+                    ) : (
+                      <>{file.settings.quality}%</>
+                    )}
+                  </span>
 
                   <span className="bg-muted px-1.5 py-0.5 rounded uppercase font-extrabold text-[10px] tracking-tight">
                     {file.settings.outputFormat}

@@ -13,12 +13,13 @@ import { useImageStore } from "@/lib/image-store";
 import { useEffect } from "react";
 
 export default function Home() {
-  const { files, checkBrowserSupport } = useImageStore();
+  const { files, checkBrowserSupport, resetToDefault } = useImageStore();
   const hasFiles = files.length > 0;
 
   useEffect(() => {
     checkBrowserSupport();
-  }, [checkBrowserSupport]);
+    resetToDefault();
+  }, [checkBrowserSupport, resetToDefault]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
