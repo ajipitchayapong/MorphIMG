@@ -26,6 +26,7 @@ export interface ConversionSettings {
   resizeHeight: number;
   maintainAspectRatio: boolean;
   targetFileSize: number | null;
+  targetFileSizeUnit: "KB" | "MB";
   lockedRatio: number | null;
 }
 
@@ -38,6 +39,7 @@ export const INITIAL_SETTINGS: ConversionSettings = {
   resizeHeight: 1080,
   maintainAspectRatio: true,
   targetFileSize: null,
+  targetFileSizeUnit: "KB",
   lockedRatio: null,
 };
 
@@ -99,6 +101,7 @@ export const useImageStore = create<ImageStore>((set, get) => ({
     resizeHeight: 1080,
     maintainAspectRatio: true,
     targetFileSize: null,
+    targetFileSizeUnit: "KB",
     lockedRatio: null,
   },
   isConverting: false,

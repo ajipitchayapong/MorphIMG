@@ -169,6 +169,7 @@ const convertSingleImage = async (
     resizeHeight: number;
     maintainAspectRatio: boolean;
     targetFileSize: number | null;
+    targetFileSizeUnit: "KB" | "MB";
   },
 ): Promise<ConversionResult> => {
   return new Promise((resolve, reject) => {
@@ -236,7 +237,9 @@ const convertSingleImage = async (
 
       // If target file size is set, iteratively adjust quality
       if (settings.targetFileSize !== null && settings.outputFormat !== "png") {
-        const targetBytes = settings.targetFileSize * 1024;
+        const multiplier =
+          settings.targetFileSizeUnit === "MB" ? 1024 * 1024 : 1024;
+        const targetBytes = settings.targetFileSize * multiplier;
         const { blob } = await findOptimalQuality(
           canvas,
           mimeType,

@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useImageStore, type ImageFormat } from "@/lib/image-store";
+import {
+  useImageStore,
+  type ImageFormat,
+  formatFileSize,
+} from "@/lib/image-store";
 import { cn } from "@/lib/utils";
 import { findOptimalQuality } from "@/lib/image-converter";
 import { Label } from "@/components/ui/label";
@@ -151,7 +155,10 @@ export function ConversionSettings() {
             settings.outputFormat === "jpg"
               ? "image/jpeg"
               : `image/${settings.outputFormat}`;
-          const targetBytes = (settings.targetFileSize || 0) * 1024;
+
+          const multiplier =
+            settings.targetFileSizeUnit === "MB" ? 1024 * 1024 : 1024;
+          const targetBytes = (settings.targetFileSize || 0) * multiplier;
 
           const result = await findOptimalQuality(
             canvas,
@@ -177,6 +184,7 @@ export function ConversionSettings() {
     return () => clearTimeout(timer);
   }, [
     settings.targetFileSize,
+    settings.targetFileSizeUnit,
     settings.resizePercentage,
     settings.resizeWidth,
     settings.resizeHeight,
@@ -377,7 +385,7 @@ export function ConversionSettings() {
                 <div className="flex items-center justify-between">
                   <Label className="flex items-center gap-2 text-xs text-muted-foreground">
                     <Target className="w-3.5 h-3.5" suppressHydrationWarning />
-                    Target File Size (Max)
+                    Limit Max File Size
                   </Label>
                   <Switch
                     checked={settings.targetFileSize !== null}
@@ -387,10 +395,15 @@ export function ConversionSettings() {
                     }
                   />
                 </div>
-                {!isLossyFormat && (
+                {!isLossyFormat ? (
                   <p className="text-[10px] text-muted-foreground mt-1">
                     Target size is only available for lossy formats (JPG, WebP,
                     AVIF). For PNG, try resizing the image.
+                  </p>
+                ) : (
+                  <p className="text-[10px] text-muted-foreground mt-1">
+                    Reduces quality if needed to keep file size under this
+                    limit. Images below this limit won't be enlarged.
                   </p>
                 )}
                 {isLossyFormat && settings.targetFileSize !== null && (
@@ -403,13 +416,24 @@ export function ConversionSettings() {
                           targetFileSize: Number(e.target.value),
                         })
                       }
-                      min={10}
+                      min={1}
                       max={10000}
                       className="flex-1 h-8 text-sm"
                     />
-                    <span className="text-xs text-muted-foreground font-medium">
-                      KB
-                    </span>
+                    <Select
+                      value={settings.targetFileSizeUnit}
+                      onValueChange={(value: "KB" | "MB") =>
+                        updateSettings({ targetFileSizeUnit: value })
+                      }
+                    >
+                      <SelectTrigger className="w-[70px] h-8 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="KB">KB</SelectItem>
+                        <SelectItem value="MB">MB</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 )}
                 {settings.targetFileSize !== null && (
@@ -425,12 +449,15 @@ export function ConversionSettings() {
                           className={cn(
                             "font-bold",
                             estimatedSize >
-                              (settings.targetFileSize || 0) * 1024
+                              (settings.targetFileSize || 0) *
+                                (settings.targetFileSizeUnit === "MB"
+                                  ? 1024 * 1024
+                                  : 1024)
                               ? "text-amber-500"
                               : "text-emerald-500",
                           )}
                         >
-                          {(estimatedSize / 1024).toFixed(1)} KB
+                          {formatFileSize(estimatedSize)}
                         </span>
                       </span>
                     ) : null}
