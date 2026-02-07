@@ -170,6 +170,7 @@ const convertSingleImage = async (
     maintainAspectRatio: boolean;
     targetFileSize: number | null;
     targetFileSizeUnit: "KB" | "MB";
+    resizeFit: "contain" | "cover" | "fill";
   },
 ): Promise<ConversionResult> => {
   return new Promise((resolve, reject) => {
@@ -180,25 +181,61 @@ const convertSingleImage = async (
       let targetWidth = img.width;
       let targetHeight = img.height;
 
+      let drawX = 0;
+      let drawY = 0;
+      let drawWidth = targetWidth;
+      let drawHeight = targetHeight;
+      let sourceX = 0;
+      let sourceY = 0;
+      let sourceWidth = img.width;
+      let sourceHeight = img.height;
+
       // Apply resize settings
       if (settings.resizeMode === "percentage") {
         targetWidth = Math.round(img.width * (settings.resizePercentage / 100));
         targetHeight = Math.round(
           img.height * (settings.resizePercentage / 100),
         );
+        drawWidth = targetWidth;
+        drawHeight = targetHeight;
       } else if (settings.resizeMode === "fixed") {
-        if (settings.maintainAspectRatio) {
+        targetWidth = settings.resizeWidth;
+        targetHeight = settings.resizeHeight;
+
+        if (settings.resizeFit === "contain") {
+          // Maintain aspect ratio within the box (letterboxing if needed, but we resize canvas to fit)
           const aspectRatio = img.width / img.height;
-          if (settings.resizeWidth / settings.resizeHeight > aspectRatio) {
-            targetHeight = settings.resizeHeight;
+          if (targetWidth / targetHeight > aspectRatio) {
+            // Target is wider than image -> constrain by height
             targetWidth = Math.round(targetHeight * aspectRatio);
           } else {
-            targetWidth = settings.resizeWidth;
+            // Target is taller than image -> constrain by width
             targetHeight = Math.round(targetWidth / aspectRatio);
           }
-        } else {
-          targetWidth = settings.resizeWidth;
-          targetHeight = settings.resizeHeight;
+          drawWidth = targetWidth;
+          drawHeight = targetHeight;
+        } else if (settings.resizeFit === "cover") {
+          // Fill the box, cropping excess
+          // Calculate scale to cover
+          const scaleX = targetWidth / img.width;
+          const scaleY = targetHeight / img.height;
+          const scale = Math.max(scaleX, scaleY);
+
+          const scaledWidth = img.width * scale;
+          const scaledHeight = img.height * scale;
+
+          // Center crop
+          sourceWidth = targetWidth / scale;
+          sourceHeight = targetHeight / scale;
+          sourceX = (img.width - sourceWidth) / 2;
+          sourceY = (img.height - sourceHeight) / 2;
+
+          drawWidth = targetWidth;
+          drawHeight = targetHeight;
+        } else if (settings.resizeFit === "fill") {
+          // Stretch to fill
+          drawWidth = targetWidth;
+          drawHeight = targetHeight;
         }
       }
 
@@ -221,7 +258,17 @@ const convertSingleImage = async (
       // Higher quality interpolation
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = "high";
-      ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+      ctx.drawImage(
+        img,
+        sourceX,
+        sourceY,
+        sourceWidth,
+        sourceHeight,
+        drawX,
+        drawY,
+        drawWidth,
+        drawHeight,
+      );
 
       // Apply Smart Sharpen if Upscaling
       // We consider it an upscale if the target area is larger than original area

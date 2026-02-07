@@ -28,6 +28,7 @@ export interface ConversionSettings {
   targetFileSize: number | null;
   targetFileSizeUnit: "KB" | "MB";
   lockedRatio: number | null;
+  resizeFit: "contain" | "cover" | "fill";
 }
 
 export const INITIAL_SETTINGS: ConversionSettings = {
@@ -38,9 +39,9 @@ export const INITIAL_SETTINGS: ConversionSettings = {
   resizeWidth: 1920,
   resizeHeight: 1080,
   maintainAspectRatio: true,
-  targetFileSize: null,
   targetFileSizeUnit: "KB",
   lockedRatio: null,
+  resizeFit: "cover",
 };
 
 interface ImageStore {
@@ -103,6 +104,7 @@ export const useImageStore = create<ImageStore>((set, get) => ({
     targetFileSize: null,
     targetFileSizeUnit: "KB",
     lockedRatio: null,
+    resizeFit: "cover",
   },
   isConverting: false,
   isEstimating: false,

@@ -495,10 +495,10 @@ export function ConversionSettings() {
             {settings.resizeMode === "percentage" && (
               <div className="space-y-3 pt-1 animate-in fade-in zoom-in-95 duration-200">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-muted-foreground">
-                    Scale Factor
+                  <span className="text-xs text-muted-foreground font-medium">
+                    Scale Percentage
                   </span>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
                     <Input
                       type="number"
                       value={settings.resizePercentage}
@@ -510,13 +510,10 @@ export function ConversionSettings() {
                           });
                         }
                       }}
-                      className="w-16 h-7 text-xs font-bold text-center p-0"
+                      className="w-14 h-7 text-xs font-bold text-center p-0"
                     />
-                    <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-full flex items-center gap-1">
-                      <span className="opacity-70 uppercase tracking-tighter">
-                        Scale
-                      </span>
-                      {settings.resizePercentage}%
+                    <span className="text-xs text-muted-foreground font-medium">
+                      %
                     </span>
                   </div>
                 </div>
@@ -647,6 +644,48 @@ export function ConversionSettings() {
                       className="h-8 text-sm font-mono"
                     />
                   </div>
+                </div>
+
+                <div className="space-y-2 pt-2 border-t border-border">
+                  <Label className="text-xs text-muted-foreground font-medium">
+                    Fit Mode
+                  </Label>
+                  <Select
+                    value={settings.resizeFit}
+                    onValueChange={(value: "contain" | "cover" | "fill") =>
+                      updateSettings({ resizeFit: value })
+                    }
+                  >
+                    <SelectTrigger className="w-full h-8 text-xs">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="cover">
+                        <span className="flex flex-col">
+                          <span>Cover (Crop)</span>
+                          <span className="text-[10px] text-muted-foreground">
+                            Fills the box, crops excess
+                          </span>
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="contain">
+                        <span className="flex flex-col">
+                          <span>Contain (Fit)</span>
+                          <span className="text-[10px] text-muted-foreground">
+                            Fits inside, preserves ratio
+                          </span>
+                        </span>
+                      </SelectItem>
+                      <SelectItem value="fill">
+                        <span className="flex flex-col">
+                          <span>Fill (Stretch)</span>
+                          <span className="text-[10px] text-muted-foreground">
+                            Stretches to exact size
+                          </span>
+                        </span>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div className="flex items-center justify-between bg-muted/40 p-2 rounded-lg">
