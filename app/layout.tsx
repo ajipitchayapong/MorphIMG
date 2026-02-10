@@ -15,8 +15,8 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const metadata: Metadata = {
   metadataBase: new URL("https://securepixel.com"),
   title: {
-    default: "SecurePixel - Free Online Image Converter | Privacy First",
-    template: "%s | SecurePixel",
+    default: "HushPixel - Free Online Image Converter | Privacy First",
+    template: "%s | HushPixel",
   },
   description:
     "Convert images instantly in your browser. 100% private - no uploads to servers. Support for HEIC, AVIF, JXL, PNG, JPG, WEBP and more. Unlimited file size, unlimited conversions.",
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     "secure image converter",
     "free image converter",
   ],
-  authors: [{ name: "SecurePixel Team" }],
-  creator: "SecurePixel",
-  publisher: "SecurePixel",
+  authors: [{ name: "HushPixel Team" }],
+  creator: "HushPixel",
+  publisher: "HushPixel",
   formatDetection: {
     email: false,
     address: false,
@@ -42,23 +42,23 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://securepixel.com",
-    title: "SecurePixel - Free Online Image Converter | Privacy First",
+    url: "https://hushpixel.com",
+    title: "HushPixel - Free Online Image Converter | Privacy First",
     description:
       "Convert images instantly in your browser. 100% private - no uploads to servers. Support for HEIC, AVIF, JXL, PNG, JPG, WEBP and more.",
-    siteName: "SecurePixel",
+    siteName: "HushPixel",
     images: [
       {
         url: "/og-image.jpg", // We should probably add an OG image later
         width: 1200,
         height: 630,
-        alt: "SecurePixel - privacy first image converter",
+        alt: "HushPixel - privacy first image converter",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "SecurePixel - Free Online Image Converter | Privacy First",
+    title: "HushPixel - Free Online Image Converter | Privacy First",
     description:
       "Convert images instantly in your browser. 100% private - no uploads to servers.",
     images: ["/og-image.jpg"], // Same as OG
@@ -98,7 +98,7 @@ export default function RootLayout({
               __html: JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "WebApplication",
-                name: "SecurePixel",
+                name: "HushPixel",
                 url: "https://securepixel.com",
                 description:
                   "Convert images instantly in your browser. 100% private - no uploads to servers.",

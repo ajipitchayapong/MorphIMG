@@ -1,12 +1,13 @@
-import { Metadata } from 'next'
-import { ConverterPage } from '@/components/converter-page'
+import { Metadata } from "next";
+import { ConverterPage } from "@/components/converter-page";
 
 export const metadata: Metadata = {
-  title: 'Free Online PNG to WebP Converter - Privacy Focused | SecurePixel',
+  title: "Free Online PNG to WebP Converter - Privacy Focused | HushPixel",
   description:
-    'Convert PNG to WebP for smaller file sizes and faster websites. 100% private browser-based conversion. No file uploads required.',
-  keywords: 'PNG to WebP, image compression, web optimization, smaller images, website speed',
-}
+    "Convert PNG to WebP for smaller file sizes and faster websites. 100% private browser-based conversion. No file uploads required.",
+  keywords:
+    "PNG to WebP, image compression, web optimization, smaller images, website speed",
+};
 
 export default function PngToWebpPage() {
   return (
@@ -17,5 +18,5 @@ export default function PngToWebpPage() {
       outputFormat="webp"
       h1="Free Online PNG to WebP Converter"
     />
-  )
+  );
 }

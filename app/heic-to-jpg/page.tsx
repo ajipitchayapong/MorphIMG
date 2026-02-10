@@ -1,12 +1,13 @@
-import { Metadata } from 'next'
-import { ConverterPage } from '@/components/converter-page'
+import { Metadata } from "next";
+import { ConverterPage } from "@/components/converter-page";
 
 export const metadata: Metadata = {
-  title: 'Free Online HEIC to JPG Converter - Privacy Focused | SecurePixel',
+  title: "Free Online HEIC to JPG Converter - Privacy Focused | HushPixel",
   description:
-    'Convert HEIC to JPG instantly in your browser. 100% private - no uploads to servers. Perfect for iPhone photos. Unlimited file size, unlimited conversions.',
-  keywords: 'HEIC to JPG, HEIC converter, iPhone photos, Apple photos converter, HEIC to JPEG',
-}
+    "Convert HEIC to JPG instantly in your browser. 100% private - no uploads to servers. Perfect for iPhone photos. Unlimited file size, unlimited conversions.",
+  keywords:
+    "HEIC to JPG, HEIC converter, iPhone photos, Apple photos converter, HEIC to JPEG",
+};
 
 export default function HeicToJpgPage() {
   return (
@@ -17,5 +18,5 @@ export default function HeicToJpgPage() {
       outputFormat="jpg"
       h1="Free Online HEIC to JPG Converter"
     />
-  )
+  );
 }

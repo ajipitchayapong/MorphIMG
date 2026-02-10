@@ -1,12 +1,13 @@
-import { Metadata } from 'next'
-import { ConverterPage } from '@/components/converter-page'
+import { Metadata } from "next";
+import { ConverterPage } from "@/components/converter-page";
 
 export const metadata: Metadata = {
-  title: 'Free Online JPG to PNG Converter - Privacy Focused | SecurePixel',
+  title: "Free Online JPG to PNG Converter - Privacy Focused | HushPixel",
   description:
-    'Convert JPG to PNG with transparency support. 100% private browser-based conversion. No file uploads, no registration required.',
-  keywords: 'JPG to PNG, JPEG to PNG, add transparency, lossless conversion, image converter',
-}
+    "Convert JPG to PNG with transparency support. 100% private browser-based conversion. No file uploads, no registration required.",
+  keywords:
+    "JPG to PNG, JPEG to PNG, add transparency, lossless conversion, image converter",
+};
 
 export default function JpgToPngPage() {
   return (
@@ -17,5 +18,5 @@ export default function JpgToPngPage() {
       outputFormat="png"
       h1="Free Online JPG to PNG Converter"
     />
-  )
+  );
 }

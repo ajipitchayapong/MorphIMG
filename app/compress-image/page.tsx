@@ -1,12 +1,13 @@
-import { Metadata } from 'next'
-import { ConverterPage } from '@/components/converter-page'
+import { Metadata } from "next";
+import { ConverterPage } from "@/components/converter-page";
 
 export const metadata: Metadata = {
-  title: 'Free Online Image Compressor - Privacy Focused | SecurePixel',
+  title: "Free Online Image Compressor - Privacy Focused | HushPixel",
   description:
-    'Compress images to any target file size. 100% private - no uploads. Supports JPG, PNG, WebP. Perfect for email attachments and web uploads.',
-  keywords: 'image compressor, compress images, reduce image size, image optimization, file size reducer',
-}
+    "Compress images to any target file size. 100% private - no uploads. Supports JPG, PNG, WebP. Perfect for email attachments and web uploads.",
+  keywords:
+    "image compressor, compress images, reduce image size, image optimization, file size reducer",
+};
 
 export default function CompressImagePage() {
   return (
@@ -17,5 +18,5 @@ export default function CompressImagePage() {
       outputFormat="webp"
       h1="Free Online Image Compressor"
     />
-  )
+  );
 }

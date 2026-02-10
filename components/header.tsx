@@ -16,10 +16,19 @@ export function Header() {
       <div className="container mx-auto px-4 h-14 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-500/25">
-            <Shield className="w-5 h-5 text-white" suppressHydrationWarning />
+            <svg
+              viewBox="0 0 32 32"
+              className="w-5 h-5 text-white fill-current"
+              suppressHydrationWarning
+            >
+              <path d="M8 6h4v20H8V6z" />
+              <path d="M20 6h4v20h-4V6z" />
+              <path d="M12 14h8v4h-8v-4z" />
+              <rect x="14" y="22" width="4" height="4" opacity="0.6" />
+            </svg>
           </div>
           <span className="font-semibold text-lg bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">
-            SecurePixel
+            HushPixel
           </span>
         </div>
 
