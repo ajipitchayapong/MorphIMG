@@ -4,6 +4,9 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 import "./globals.css";
 
@@ -117,6 +120,11 @@ export default function RootLayout({
             src="https://cdn.jsdelivr.net/npm/heic-to@1.4.2/dist/iife/heic-to.js"
             strategy="beforeInteractive"
           />
+          <Analytics />
+          <SpeedInsights />
+          {process.env.NEXT_PUBLIC_GA_ID && (
+            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+          )}
         </ThemeProvider>
       </body>
     </html>
