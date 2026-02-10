@@ -13,7 +13,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://securepixel.com"),
+  metadataBase: new URL("https://hushpixel.com"),
   title: {
     default: "HushPixel - Free Online Image Converter | Privacy First",
     template: "%s | HushPixel",
