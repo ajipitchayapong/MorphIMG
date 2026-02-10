@@ -66,12 +66,9 @@ export function ConversionSettings() {
     isConverting,
     isEstimating,
     setIsEstimating,
-    supportedOutputFormats,
   } = useImageStore();
 
-  const filteredOutputFormats = OUTPUT_FORMATS.filter((f) =>
-    supportedOutputFormats.includes(f.value),
-  );
+  const filteredOutputFormats = OUTPUT_FORMATS;
 
   const selectedFormat = filteredOutputFormats.find(
     (f) => f.value === settings.outputFormat,
@@ -88,9 +85,12 @@ export function ConversionSettings() {
   const targetFile = primarySelectedFile || largestFile || null;
 
   const applyRatio = (ratio: number) => {
+    // Determine the dominant dimension to keep
+    const baseWidth = settings.resizeWidth || 1920;
     updateSettings({
       resizeMode: "fixed",
-      resizeHeight: Math.round(settings.resizeWidth / ratio),
+      resizeWidth: baseWidth,
+      resizeHeight: Math.round(baseWidth / ratio),
       maintainAspectRatio: true,
       lockedRatio: ratio,
     });
@@ -541,9 +541,11 @@ export function ConversionSettings() {
                 <div className="grid grid-cols-3 gap-2">
                   {RATIO_PRESETS.map((preset) => {
                     const currentRatio =
-                      settings.resizeWidth / settings.resizeHeight;
+                      settings.resizeHeight > 0
+                        ? settings.resizeWidth / settings.resizeHeight
+                        : 0;
                     const isActive =
-                      Math.abs(currentRatio - preset.ratio) < 0.001 &&
+                      Math.abs(currentRatio - preset.ratio) < 0.05 &&
                       settings.maintainAspectRatio;
 
                     return (

@@ -1,5 +1,7 @@
 import { useImageStore, type ImageFormat, type ImageFile } from "./image-store";
 import JSZip from "jszip";
+//
+// HEIC support via heic-to (CDN)
 
 const getMimeType = (format: ImageFormat): string => {
   const mimeTypes: Record<ImageFormat, string> = {
@@ -49,9 +51,9 @@ export const findOptimalQuality = async (
   const initialBlob = await tryConvert(high);
   const secondBlob = await tryConvert(low);
 
-  console.log(
+  /* console.log(
     `[Estimation] Testing support for ${mimeType}: initial=${initialBlob.type} (${initialBlob.size}), second=${secondBlob.type} (${secondBlob.size})`,
-  );
+  ); */
 
   // Check if browser actually supports the quality parameter AND the mimeType
   const isTypeSupported = initialBlob.type === mimeType;
@@ -62,26 +64,13 @@ export const findOptimalQuality = async (
     !isQualitySupported ||
     initialBlob.size <= targetBytes
   ) {
-    if (initialBlob.size <= targetBytes) {
-      console.log(
-        `[Estimation] Target met at high quality: ${initialBlob.size} <= ${targetBytes}`,
-      );
-    } else if (!isTypeSupported) {
-      console.log(
-        `[Estimation] Browser fallback to ${initialBlob.type} (Expected ${mimeType})`,
-      );
-    } else {
-      console.log(
-        `[Estimation] Quality adjustment not supported for ${mimeType}`,
-      );
-    }
     return { blob: initialBlob, quality: high };
   }
 
   let bestBlob = secondBlob;
-  console.log(
+  /* console.log(
     `[Estimation] Starting search: high=${initialBlob.size}, low=${secondBlob.size}, target=${targetBytes}`,
-  );
+  ); */
 
   // Optimize search: 10 iterations for ~0.1% precision
   for (let i = 0; i < 10; i++) {
@@ -173,11 +162,76 @@ const convertSingleImage = async (
     resizeFit: "contain" | "cover" | "fill";
   },
 ): Promise<ConversionResult> => {
+  console.log(`[Converter] Starting conversion for ${file.name}`, {
+    format: settings.outputFormat,
+    mode: settings.resizeMode,
+    fit: settings.resizeFit,
+    target: `${settings.resizeWidth}x${settings.resizeHeight}`,
+    percentage: settings.resizePercentage,
+  });
+  // Handle HEIC/HEIF conversion first if needed
+  let imageSource: string | Blob = file;
+  let isHeic = false;
+
+  if (
+    file.type === "image/heic" ||
+    file.type === "image/heif" ||
+    file.name.toLowerCase().endsWith(".heic") ||
+    file.name.toLowerCase().endsWith(".heif")
+  ) {
+    try {
+      const globalHeicTo = (window as any).HeicTo || (window as any).heicTo;
+
+      if (typeof window !== "undefined" && !globalHeicTo) {
+        throw new Error("HEIC conversion library not loaded.");
+      }
+
+      const HeicTo = globalHeicTo;
+      console.log("Converting HEIC to JPEG for processing:", file.name);
+
+      const convertedBlob = await HeicTo({
+        blob: file,
+        type: "image/jpeg",
+        quality: 1,
+      });
+      console.log("HEIC to JPEG conversion successful:", file.name);
+
+      // heic2any can return a single blob or an array of blobs
+      imageSource = Array.isArray(convertedBlob)
+        ? convertedBlob[0]
+        : convertedBlob;
+      isHeic = true;
+    } catch (e) {
+      let errorMessage = "Unknown error";
+      if (e instanceof Error) {
+        errorMessage = e.message;
+      } else if (typeof e === "object" && e !== null) {
+        try {
+          errorMessage = JSON.stringify(e);
+        } catch {
+          errorMessage = "Unserializable object";
+        }
+      } else {
+        errorMessage = String(e);
+      }
+      console.error("HEIC conversion failed:", errorMessage, e);
+      throw new Error(
+        "Failed to process HEIC file. Please ensure the file is valid.",
+      );
+    }
+  }
+
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
+    const objectUrl = URL.createObjectURL(
+      imageSource instanceof Blob ? imageSource : file,
+    );
 
     img.onload = async () => {
+      // Clean up the object URL if we created one specifically for conversion
+      URL.revokeObjectURL(objectUrl);
+
       let targetWidth = img.width;
       let targetHeight = img.height;
 
@@ -203,17 +257,22 @@ const convertSingleImage = async (
         targetHeight = settings.resizeHeight;
 
         if (settings.resizeFit === "contain") {
-          // Maintain aspect ratio within the box (letterboxing if needed, but we resize canvas to fit)
+          // Keep the target dimensions exactly as specified
+          // and fit the image inside while maintaining aspect ratio
           const aspectRatio = img.width / img.height;
-          if (targetWidth / targetHeight > aspectRatio) {
-            // Target is wider than image -> constrain by height
-            targetWidth = Math.round(targetHeight * aspectRatio);
+          const targetRatio = targetWidth / targetHeight;
+
+          if (targetRatio > aspectRatio) {
+            // Target is wider than image -> fit to height
+            drawHeight = targetHeight;
+            drawWidth = Math.round(targetHeight * aspectRatio);
+            drawX = Math.round((targetWidth - drawWidth) / 2);
           } else {
-            // Target is taller than image -> constrain by width
-            targetHeight = Math.round(targetWidth / aspectRatio);
+            // Target is taller than image -> fit to width
+            drawWidth = targetWidth;
+            drawHeight = Math.round(targetWidth / aspectRatio);
+            drawY = Math.round((targetHeight - drawHeight) / 2);
           }
-          drawWidth = targetWidth;
-          drawHeight = targetHeight;
         } else if (settings.resizeFit === "cover") {
           // Fill the box, cropping excess
           // Calculate scale to cover
@@ -239,6 +298,9 @@ const convertSingleImage = async (
         }
       }
 
+      console.log(
+        `[Converter] Canvas size for ${file.name}: ${targetWidth}x${targetHeight}`,
+      );
       const canvas = document.createElement("canvas");
       canvas.width = targetWidth;
       canvas.height = targetHeight;
@@ -249,8 +311,12 @@ const convertSingleImage = async (
         return;
       }
 
-      // Fill with white background for JPG (no alpha channel)
-      if (settings.outputFormat === "jpg") {
+      // Fill background for JPG/HEIC or whenever using "contain" to provide padding color
+      if (
+        settings.outputFormat === "jpg" ||
+        isHeic ||
+        settings.resizeFit === "contain"
+      ) {
         ctx.fillStyle = "#ffffff";
         ctx.fillRect(0, 0, targetWidth, targetHeight);
       }
@@ -293,34 +359,12 @@ const convertSingleImage = async (
           targetBytes,
         );
 
-        // CHECK: Did the browser actually give us AVIF?
-        if (settings.outputFormat === "avif" && blob.type !== "image/avif") {
-          reject(
-            new Error(
-              "Browser silently fell back to PNG. AVIF encoding is not supported.",
-            ),
-          );
-          return;
-        }
-
         resolve({ blob, width: targetWidth, height: targetHeight });
       } else {
         const quality = settings.quality / 100;
         canvas.toBlob(
           (blob) => {
             if (blob) {
-              // CHECK: Did the browser actually give us AVIF?
-              if (
-                settings.outputFormat === "avif" &&
-                blob.type !== "image/avif"
-              ) {
-                reject(
-                  new Error(
-                    "Browser silently fell back to PNG. AVIF encoding is not supported.",
-                  ),
-                );
-                return;
-              }
               resolve({ blob, width: targetWidth, height: targetHeight });
             } else {
               reject(new Error("Failed to convert image"));
@@ -333,37 +377,73 @@ const convertSingleImage = async (
     };
 
     img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
       reject(new Error("Failed to load image"));
     };
 
-    img.src = URL.createObjectURL(file);
+    img.src = objectUrl;
   });
 };
 
 export const convertImages = async (): Promise<void> => {
   const store = useImageStore.getState();
-  const { files, settings, updateFileStatus, setIsConverting } = store;
+  const { files, updateFileStatus, setIsConverting } = store;
 
   const pendingFiles = files.filter((f) => f.status === "pending");
   if (pendingFiles.length === 0) return;
 
   setIsConverting(true);
 
-  for (const file of pendingFiles) {
-    updateFileStatus(file.id, "converting");
+  const CONCURRENCY_LIMIT = 3;
+  const queue = [...pendingFiles];
 
-    try {
-      const result = await convertSingleImage(file.file, file.settings);
-      updateFileStatus(file.id, "done", {
-        convertedBlob: result.blob,
-        convertedSize: result.blob.size,
-      });
-    } catch (error) {
-      updateFileStatus(file.id, "error", {
-        error: error instanceof Error ? error.message : "Unknown error",
-      });
+  // Helper to process a single file from the queue
+  const processNext = async () => {
+    while (queue.length > 0) {
+      const file = queue.shift();
+      if (!file) break;
+
+      updateFileStatus(file.id, "converting");
+
+      // Sub-progress simulation
+      useImageStore.setState({ subProgress: 0 });
+      const simulationInterval = setInterval(() => {
+        const current = useImageStore.getState().subProgress;
+        if (current < 90) {
+          useImageStore.setState({ subProgress: current + Math.random() * 10 });
+        }
+      }, 200);
+
+      try {
+        const result = await convertSingleImage(file.file, file.settings);
+        clearInterval(simulationInterval);
+        useImageStore.setState({ subProgress: 100 });
+
+        updateFileStatus(file.id, "done", {
+          convertedBlob: result.blob,
+          convertedSize: result.blob.size,
+        });
+
+        // Brief pause to show 100%
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        useImageStore.setState({ subProgress: 0 });
+      } catch (error) {
+        clearInterval(simulationInterval);
+        updateFileStatus(file.id, "error", {
+          error: error instanceof Error ? error.message : "Unknown error",
+        });
+        useImageStore.setState({ subProgress: 0 });
+      }
     }
-  }
+  };
+
+  // Create a pool of workers
+  const workers = Array.from(
+    { length: Math.min(CONCURRENCY_LIMIT, pendingFiles.length) },
+    () => processNext(),
+  );
+
+  await Promise.all(workers);
 
   setIsConverting(false);
 };

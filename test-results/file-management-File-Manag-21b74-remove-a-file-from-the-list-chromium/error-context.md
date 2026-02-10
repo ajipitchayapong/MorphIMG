@@ -1,0 +1,113 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - img [ref=e7]
+          - generic [ref=e9]: SecurePixel
+        - generic [ref=e10]:
+          - generic [ref=e13]: 100% Private
+          - button "Toggle theme" [ref=e14] [cursor=pointer]:
+            - img
+            - generic [ref=e15]: Toggle theme
+    - main [ref=e16]:
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - heading "Convert images instantly. 100% private." [level=1] [ref=e20]:
+            - text: Convert images instantly.
+            - text: 100% private.
+          - paragraph [ref=e21]: Convert, compress, and resize images entirely in your browser. Your files never leave your device.
+        - generic [ref=e23]:
+          - generic [ref=e25] [cursor=pointer]:
+            - img [ref=e27]
+            - heading "Drop images here to start" [level=2] [ref=e30]
+            - paragraph [ref=e31]: or click to browse your files
+            - button "Select Images" [ref=e32]:
+              - img
+              - text: Select Images
+            - generic [ref=e33]:
+              - generic [ref=e34]:
+                - img [ref=e35]
+                - generic [ref=e39]: JPG, PNG, WebP, HEIC, AVIF
+              - generic [ref=e40]:
+                - img [ref=e41]
+                - generic [ref=e44]: 100% private
+          - generic [ref=e46]:
+            - img [ref=e47]
+            - generic [ref=e50]: Files are processed locally in your browser and never uploaded
+      - generic [ref=e52]:
+        - generic [ref=e53]:
+          - heading "Why choose SecurePixel?" [level=2] [ref=e54]
+          - paragraph [ref=e55]: Built for professionals who value privacy and efficiency. No compromises.
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - img [ref=e59]
+            - heading "100% Private" [level=3] [ref=e61]
+            - paragraph [ref=e62]: Your files never leave your device. All processing happens locally in your browser.
+          - generic [ref=e63]:
+            - img [ref=e65]
+            - heading "Lightning Fast" [level=3] [ref=e67]
+            - paragraph [ref=e68]: Powered by WebAssembly for near-native performance. Convert files in seconds.
+          - generic [ref=e69]:
+            - img [ref=e71]
+            - heading "Unlimited" [level=3] [ref=e73]
+            - paragraph [ref=e74]: No file size limits, no daily caps. Convert as many images as you need.
+          - generic [ref=e75]:
+            - img [ref=e77]
+            - heading "No Storage Used" [level=3] [ref=e79]
+            - paragraph [ref=e80]: We don't store any data. Everything is processed in memory and discarded.
+          - generic [ref=e81]:
+            - img [ref=e83]
+            - heading "Works Offline" [level=3] [ref=e87]
+            - paragraph [ref=e88]: Once loaded, the converter works without an internet connection.
+          - generic [ref=e89]:
+            - img [ref=e91]
+            - heading "Enterprise Ready" [level=3] [ref=e94]
+            - paragraph [ref=e95]: Safe for sensitive documents, legal files, and confidential images.
+      - generic [ref=e97]:
+        - generic [ref=e98]:
+          - heading "Supported Formats" [level=2] [ref=e99]
+          - paragraph [ref=e100]: Convert between all major image formats including the latest HEIC and AVIF.
+        - generic [ref=e102]:
+          - generic [ref=e103]:
+            - heading "Input Formats" [level=3] [ref=e104]
+            - generic [ref=e105]:
+              - generic [ref=e106]: JPG
+              - generic [ref=e107]: PNG
+              - generic [ref=e108]: WEBP
+              - generic [ref=e109]: GIF
+              - generic [ref=e110]: HEIC
+              - generic [ref=e111]: AVIF
+              - generic [ref=e112]: TIFF
+              - generic [ref=e113]: BMP
+          - img [ref=e116]
+          - generic [ref=e118]:
+            - heading "Output Formats" [level=3] [ref=e119]
+            - generic [ref=e120]:
+              - generic [ref=e121]: JPG
+              - generic [ref=e122]: PNG
+              - generic [ref=e123]: WEBP
+              - generic [ref=e124]: AVIF
+    - contentinfo [ref=e125]:
+      - generic [ref=e126]:
+        - generic [ref=e127]:
+          - generic [ref=e128]:
+            - img [ref=e130]
+            - generic [ref=e132]: SecurePixel
+          - generic [ref=e133]:
+            - link "HEIC to JPG" [ref=e134] [cursor=pointer]:
+              - /url: /heic-to-jpg
+            - link "PNG to WebP" [ref=e135] [cursor=pointer]:
+              - /url: /png-to-webp
+            - link "Compress Image" [ref=e136] [cursor=pointer]:
+              - /url: /compress-image
+          - generic [ref=e137]:
+            - generic [ref=e138]: Made with
+            - img [ref=e139]
+            - generic [ref=e141]: for privacy
+        - paragraph [ref=e143]: All processing happens in your browser. Your files never touch our servers.
+  - region "Notifications alt+T"
+```

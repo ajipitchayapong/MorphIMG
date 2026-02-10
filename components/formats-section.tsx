@@ -17,11 +17,7 @@ const inputFormats = [
 const OUTPUT_FORMAT_CONFIG = ["JPG", "PNG", "WEBP", "AVIF"];
 
 export function FormatsSection() {
-  const { supportedOutputFormats } = useImageStore();
-
-  const filteredOutputFormats = OUTPUT_FORMAT_CONFIG.filter((format) =>
-    supportedOutputFormats.includes(format.toLowerCase() as any),
-  );
+  const filteredOutputFormats = OUTPUT_FORMAT_CONFIG;
 
   return (
     <section id="formats" className="py-20">
@@ -31,8 +27,8 @@ export function FormatsSection() {
             Supported Formats
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-balance">
-            Convert between all major image formats including the latest HEIC{" "}
-            {supportedOutputFormats.includes("avif") && "and AVIF"}.
+            Convert between all major image formats including the latest HEIC
+            and AVIF.
           </p>
         </div>
 
@@ -57,9 +53,9 @@ export function FormatsSection() {
 
             {/* Arrow */}
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                 <ArrowRight
-                  className="w-6 h-6 text-primary-foreground"
+                  className="w-6 h-6 text-white"
                   suppressHydrationWarning
                 />
               </div>
@@ -74,7 +70,7 @@ export function FormatsSection() {
                 {filteredOutputFormats.map((format) => (
                   <span
                     key={format}
-                    className="px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium"
+                    className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-lg text-sm font-medium shadow-lg shadow-emerald-500/20"
                   >
                     {format}
                   </span>

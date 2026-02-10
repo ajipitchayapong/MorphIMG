@@ -39,6 +39,7 @@ export const INITIAL_SETTINGS: ConversionSettings = {
   resizeWidth: 1920,
   resizeHeight: 1080,
   maintainAspectRatio: true,
+  targetFileSize: null,
   targetFileSizeUnit: "KB",
   lockedRatio: null,
   resizeFit: "cover",
@@ -50,8 +51,8 @@ interface ImageStore {
   selectedFileIds: string[];
   isConverting: boolean;
   isEstimating: boolean;
-  supportedOutputFormats: ImageFormat[];
   isPersistenceEnabled: boolean;
+  subProgress: number; // 0-100 progress for the current file being converted
   addFiles: (files: File[]) => void;
   removeFile: (id: string) => void;
   clearFiles: () => void;
@@ -70,7 +71,6 @@ interface ImageStore {
   clearSelection: () => void;
   setIsConverting: (isConverting: boolean) => void;
   setIsEstimating: (isEstimating: boolean) => void;
-  checkBrowserSupport: () => void;
   saveSettingsAsDefault: () => void;
   clearSavedSettings: () => void;
   togglePersistence: (enabled: boolean) => void;
@@ -108,9 +108,9 @@ export const useImageStore = create<ImageStore>((set, get) => ({
   },
   isConverting: false,
   isEstimating: false,
-  supportedOutputFormats: ["jpg", "png"], // Minimum guaranteed
   isPersistenceEnabled: false,
   selectedFileIds: [],
+  subProgress: 0,
 
   addFiles: (newFiles) => {
     const currentSettings = get().settings;
@@ -138,9 +138,73 @@ export const useImageStore = create<ImageStore>((set, get) => ({
     }));
 
     // Asynchronously load dimensions
-    imageFiles.forEach((imgFile, index) => {
+    imageFiles.forEach(async (imgFile, index) => {
+      let src = imgFile.preview;
+      let isHeic = false;
+
+      // Handle HEIC preview generation
+      if (
+        imgFile.file.type === "image/heic" ||
+        imgFile.file.type === "image/heif" ||
+        imgFile.name.toLowerCase().endsWith(".heic") ||
+        imgFile.name.toLowerCase().endsWith(".heif")
+      ) {
+        try {
+          // Detect HEIC conversion library (HeicTo or heicTo)
+          const globalHeicTo = (window as any).HeicTo || (window as any).heicTo;
+
+          if (typeof window !== "undefined" && !globalHeicTo) {
+            console.error(
+              "HEIC Library detection failed. window.HeicTo:",
+              (window as any).HeicTo,
+              "window.heicTo:",
+              (window as any).heicTo,
+            );
+            throw new Error(
+              "HEIC conversion library not found on window object.",
+            );
+          }
+
+          const HeicTo = globalHeicTo;
+          console.log("Starting HEIC preview conversion for:", imgFile.name);
+
+          const convertedBlob = await HeicTo({
+            blob: imgFile.file,
+            type: "image/jpeg",
+            quality: 0.5, // Lower quality for preview is fine
+          });
+          console.log("HEIC preview conversion successful for:", imgFile.name);
+
+          const blob = Array.isArray(convertedBlob)
+            ? convertedBlob[0]
+            : convertedBlob;
+          src = URL.createObjectURL(blob);
+          isHeic = true;
+
+          // Update the preview URL in the store
+          get().updateFileStatus(imgFile.id, "pending", {
+            preview: src,
+          });
+        } catch (e) {
+          // Inspect the error object for details
+          let errorMessage = "Unknown error";
+          if (e instanceof Error) {
+            errorMessage = e.message;
+          } else if (typeof e === "object" && e !== null) {
+            try {
+              errorMessage = JSON.stringify(e);
+            } catch {
+              errorMessage = "Unserializable object";
+            }
+          } else {
+            errorMessage = String(e);
+          }
+          console.error("Failed to generate HEIC preview:", errorMessage, e);
+        }
+      }
+
       const img = new Image();
-      img.src = imgFile.preview;
+      img.src = src;
       img.onload = () => {
         const width = img.naturalWidth;
         const height = img.naturalHeight;
@@ -156,7 +220,13 @@ export const useImageStore = create<ImageStore>((set, get) => ({
           lockedRatio: width / height,
         });
 
-        if (get().files.length === imageFiles.length && index === 0) {
+        if (
+          get().files.length === imageFiles.length &&
+          index === 0 &&
+          !get().settings.lockedRatio &&
+          get().settings.resizeWidth === INITIAL_SETTINGS.resizeWidth &&
+          get().settings.resizeHeight === INITIAL_SETTINGS.resizeHeight
+        ) {
           get().updateSettings({
             resizeWidth: width,
             resizeHeight: height,
@@ -214,13 +284,18 @@ export const useImageStore = create<ImageStore>((set, get) => ({
     set((state) => ({
       settings: updatedGlobal,
       files: state.files.map((f) => {
-        if (selectedFileIds.length === 0) {
-          // BATCH MODE: Force sync ALL files to the updated global settings
-          return { ...f, settings: updatedGlobal };
-        }
-        if (selectedFileIds.includes(f.id)) {
-          // MULTI-SELECT: Update only selected files with the new values
-          return { ...f, settings: { ...f.settings, ...newSettings } };
+        const isAffected =
+          selectedFileIds.length === 0 || selectedFileIds.includes(f.id);
+
+        if (isAffected) {
+          return {
+            ...f,
+            status: f.status === "done" ? "pending" : f.status,
+            settings:
+              selectedFileIds.length === 0
+                ? updatedGlobal
+                : { ...f.settings, ...newSettings },
+          };
         }
         return f;
       }),
@@ -234,7 +309,13 @@ export const useImageStore = create<ImageStore>((set, get) => ({
   updateFileSettings: (id, newSettings) => {
     set((state) => ({
       files: state.files.map((f) =>
-        f.id === id ? { ...f, settings: { ...f.settings, ...newSettings } } : f,
+        f.id === id
+          ? {
+              ...f,
+              status: f.status === "done" ? "pending" : f.status,
+              settings: { ...f.settings, ...newSettings },
+            }
+          : f,
       ),
       // If we're updating a file that might be representing the current visible settings, sync it
       settings:
@@ -281,37 +362,6 @@ export const useImageStore = create<ImageStore>((set, get) => ({
   },
   setIsEstimating: (isEstimating) => {
     set({ isEstimating });
-  },
-  checkBrowserSupport: () => {
-    if (typeof window === "undefined") return;
-
-    const formats: ImageFormat[] = ["jpg", "png"];
-    const testFormats: ImageFormat[] = ["webp", "avif"];
-
-    const canvas = document.createElement("canvas");
-    canvas.width = 1;
-    canvas.height = 1;
-
-    testFormats.forEach((format) => {
-      const mimeType = format === "webp" ? "image/webp" : "image/avif";
-      const data = canvas.toDataURL(mimeType);
-      if (data.startsWith(`data:${mimeType}`)) {
-        formats.push(format);
-      }
-    });
-
-    set({ supportedOutputFormats: formats });
-
-    // Fallback if current default is not supported
-    const { settings } = get();
-    if (!formats.includes(settings.outputFormat)) {
-      set({
-        settings: {
-          ...settings,
-          outputFormat: formats.includes("webp") ? "webp" : "jpg",
-        },
-      });
-    }
   },
 
   saveSettingsAsDefault: () => {

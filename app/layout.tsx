@@ -1,4 +1,5 @@
 import React from "react";
+import Script from "next/script";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -112,6 +113,10 @@ export default function RootLayout({
             }}
           />
           <Toaster />
+          <Script
+            src="https://cdn.jsdelivr.net/npm/heic-to@1.4.2/dist/iife/heic-to.js"
+            strategy="beforeInteractive"
+          />
         </ThemeProvider>
       </body>
     </html>

@@ -131,14 +131,33 @@ export function FileList() {
                 <div className="absolute left-0 top-1.5 bottom-1.5 w-1.5 bg-gradient-to-b from-emerald-400 to-teal-500 rounded-r-full shadow-[2px_0_12px_rgba(16,185,129,0.5)] z-10" />
               )}
               {/* Thumbnail */}
-              <div className="w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0 relative">
+              <div
+                className={cn(
+                  "w-12 h-12 rounded-lg overflow-hidden bg-muted flex-shrink-0 relative",
+                  file.status === "converting" && "animate-pulse",
+                )}
+              >
                 <img
                   src={file.preview || "/placeholder.svg"}
                   alt={file.name}
-                  className="w-full h-full object-cover"
+                  className={cn(
+                    "w-full h-full object-cover transition-opacity duration-300",
+                    file.status === "converting" && "opacity-40 grayscale",
+                  )}
                 />
+
+                {/* Shimmer Overlay */}
                 {file.status === "converting" && (
-                  <div className="absolute inset-0 bg-background/80 flex items-center justify-center">
+                  <div className="absolute inset-0 animate-shimmer opacity-30 z-10" />
+                )}
+
+                {/* Scanning Line */}
+                {file.status === "converting" && (
+                  <div className="absolute top-0 left-0 w-full h-[2px] bg-emerald-400 shadow-[0_0_8px_#34d399] z-20 animate-scan" />
+                )}
+
+                {file.status === "converting" && (
+                  <div className="absolute inset-0 bg-background/20 flex items-center justify-center z-30">
                     <Loader2
                       className="w-5 h-5 animate-spin text-emerald-500"
                       suppressHydrationWarning
@@ -164,6 +183,31 @@ export function FileList() {
                   <span className="font-mono">
                     {formatFileSize(file.originalSize)}
                   </span>
+
+                  {file.status === "converting" && (
+                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.25 rounded flex items-center gap-1 animate-pulse">
+                      <Loader2 className="w-2.5 h-2.5 animate-spin" />
+                      Converting
+                    </span>
+                  )}
+
+                  {file.status === "done" && (
+                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.25 rounded">
+                      Done
+                    </span>
+                  )}
+
+                  {file.status === "pending" && (
+                    <span className="text-[10px] font-bold text-muted-foreground bg-muted px-1.5 py-0.25 rounded">
+                      Pending
+                    </span>
+                  )}
+
+                  {file.status === "error" && (
+                    <span className="text-[10px] font-bold text-destructive bg-destructive/10 px-1.5 py-0.25 rounded">
+                      Error
+                    </span>
+                  )}
 
                   {file.settings.resizeMode !== "none" && (
                     <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-1.5 py-0.25 rounded flex items-center gap-1">
