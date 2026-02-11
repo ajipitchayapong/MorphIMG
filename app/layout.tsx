@@ -88,7 +88,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
@@ -115,7 +115,6 @@ export default function RootLayout({
               }),
             }}
           />
-          <Toaster />
           <Script
             src="https://cdn.jsdelivr.net/npm/heic-to@1.4.2/dist/iife/heic-to.js"
             strategy="beforeInteractive"

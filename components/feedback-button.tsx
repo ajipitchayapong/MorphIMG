@@ -27,17 +27,13 @@ export function FeedbackButton() {
     const formData = new FormData(e.currentTarget);
 
     try {
-      const response = await fetch(
-        "https://formsubmit.co/ajax/saelim.aji@gmail.com",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify(Object.fromEntries(formData)),
+      const response = await fetch("/api/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify(Object.fromEntries(formData)),
+      });
 
       if (response.ok) {
         setIsSuccess(true);
@@ -107,16 +103,9 @@ export function FeedbackButton() {
             </div>
             <input
               type="hidden"
-              name="_subject"
-              value="🚀 New Feedback from MorphIMG"
-            />
-            <input type="hidden" name="_template" value="table" />
-            <input
-              type="hidden"
               name="Source_Site"
               value="MorphIMG (ajioh.com)"
             />
-            <input type="hidden" name="_honey" style={{ display: "none" }} />
             <Button
               type="submit"
               disabled={isSubmitting}

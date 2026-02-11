@@ -1,5 +1,7 @@
 import React from "react";
-import { Shield, Lock, Eye, Cookie } from "lucide-react";
+import { Shield, Lock, Eye, Cookie, ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Privacy Policy | MorphIMG",
@@ -10,6 +12,19 @@ export const metadata = {
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-background py-20 px-4">
+      <div className="max-w-3xl mx-auto mb-8">
+        <Button
+          variant="ghost"
+          size="sm"
+          asChild
+          className="text-muted-foreground hover:text-blue-500 transition-colors"
+        >
+          <Link href="/" className="flex items-center gap-2">
+            <ArrowLeft className="w-4 h-4" />
+            Back to Home
+          </Link>
+        </Button>
+      </div>
       <div className="max-w-3xl mx-auto space-y-12">
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold tracking-tight">Privacy Policy</h1>

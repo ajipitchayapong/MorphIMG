@@ -29,12 +29,12 @@ export function UserGuidelines() {
           className={cn(
             "relative overflow-hidden rounded-xl border p-4 transition-all duration-300",
             isAnySelected
-              ? "bg-emerald-500/5 border-emerald-500/20"
+              ? "bg-blue-500/5 border-blue-500/20"
               : "bg-muted/30 border-border",
           )}
         >
           <div className="flex gap-3 items-start">
-            <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <div className="p-2 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">
               <MousePointer2 className="w-5 h-5" />
             </div>
             <div>
@@ -43,11 +43,9 @@ export function UserGuidelines() {
               </h4>
               <p className="text-[13px] text-muted-foreground leading-relaxed">
                 Click an image in the list to configure it{" "}
-                <span className="text-emerald-500 font-medium">
-                  individually
-                </span>
-                . The configuration panel will light up to show which file
-                you're editing.
+                <span className="text-blue-500 font-medium">individually</span>.
+                The configuration panel will light up to show which file you're
+                editing.
               </p>
             </div>
           </div>
@@ -58,12 +56,12 @@ export function UserGuidelines() {
           className={cn(
             "relative overflow-hidden rounded-xl border p-4 transition-all duration-300",
             !isAnySelected
-              ? "bg-teal-500/5 border-teal-500/20"
+              ? "bg-indigo-500/5 border-indigo-500/20"
               : "bg-muted/30 border-border",
           )}
         >
           <div className="flex gap-3 items-start">
-            <div className="p-2 rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400">
+            <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
               <Layers className="w-5 h-5" />
             </div>
             <div>
@@ -72,7 +70,7 @@ export function UserGuidelines() {
               </h4>
               <p className="text-[13px] text-muted-foreground leading-relaxed">
                 Deselect or don't pick a file to enter{" "}
-                <span className="text-teal-500 font-medium">Batch Mode</span>.
+                <span className="text-indigo-500 font-medium">Batch Mode</span>.
                 Any settings you change will apply to{" "}
                 <span className="italic">all images</span> in your list at once.
               </p>

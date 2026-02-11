@@ -146,15 +146,25 @@ export function DropZone({ compact = false }: DropZoneProps) {
 
           <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6 text-xs md:text-sm text-muted-foreground">
             <div className="flex items-center gap-1.5">
-              <ImageIcon className="w-4 h-4" suppressHydrationWarning />
-              <span>JPG, PNG, WebP, HEIC, AVIF</span>
+              <ImageIcon
+                className="w-4 h-4 text-blue-500"
+                suppressHydrationWarning
+              />
+              <span>Input: HEIC, AVIF, WebP, PNG, JPG</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <Sparkles
+                className="w-4 h-4 text-indigo-500"
+                suppressHydrationWarning
+              />
+              <span>Convert, Resize & Compress</span>
             </div>
             <div className="flex items-center gap-1.5">
               <ShieldCheck
-                className="w-4 h-4 text-success"
+                className="w-4 h-4 text-blue-500"
                 suppressHydrationWarning
               />
-              <span>100% private</span>
+              <span>100% Private (No Uploads)</span>
             </div>
           </div>
         </div>
@@ -163,7 +173,7 @@ export function DropZone({ compact = false }: DropZoneProps) {
       <div className="mt-4 flex items-center justify-center">
         <div className="flex items-center gap-2 px-3 py-1.5 text-xs md:text-sm">
           <ShieldCheck
-            className="w-4 h-4 text-success"
+            className="w-4 h-4 text-blue-500"
             suppressHydrationWarning
           />
           <span className="text-muted-foreground">
