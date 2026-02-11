@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { ConverterPage } from "@/components/converter-page";
 
 export const metadata: Metadata = {
-  title: "Free Online PNG to WebP Converter - Privacy Focused | HushPixel",
+  title: "Free Online PNG to WebP Converter - Privacy Focused | MorphIMG",
   description:
     "Convert PNG to WebP for smaller file sizes and faster websites. 100% private browser-based conversion. No file uploads required.",
   keywords:

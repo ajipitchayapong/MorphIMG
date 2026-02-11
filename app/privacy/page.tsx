@@ -2,9 +2,9 @@ import React from "react";
 import { Shield, Lock, Eye, Cookie } from "lucide-react";
 
 export const metadata = {
-  title: "Privacy Policy | HushPixel",
+  title: "Privacy Policy | MorphIMG",
   description:
-    "Learn how HushPixel protects your privacy and handles your data.",
+    "Learn how MorphIMG protects your privacy and handles your data.",
 };
 
 export default function PrivacyPage() {
@@ -21,17 +21,17 @@ export default function PrivacyPage() {
         <section className="space-y-6">
           <div className="flex items-start gap-4 p-6 rounded-2xl bg-card border shadow-sm">
             <div className="mt-1">
-              <Lock className="w-6 h-6 text-emerald-500" />
+              <Lock className="w-6 h-6 text-blue-500" />
             </div>
             <div className="space-y-2">
               <h2 className="text-xl font-semibold">
                 Privacy First: Local Processing
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                HushPixel is built on a "Privacy First" principle. Unlike
-                regular converters, your images are **never uploaded to our
-                servers**. All conversion, resizing, and processing happens
-                directly in your browser using WebAssembly.
+                MorphIMG is built on a "Privacy First" principle. Unlike regular
+                converters, your images are **never uploaded to our servers**.
+                All conversion, resizing, and processing happens directly in
+                your browser using WebAssembly.
               </p>
             </div>
           </div>

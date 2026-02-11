@@ -119,8 +119,8 @@ export function DropZone({ compact = false }: DropZoneProps) {
             className={cn(
               "w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center mb-5 transition-all duration-300",
               isDragOver
-                ? "bg-gradient-to-br from-emerald-500 to-teal-600 text-white scale-110 shadow-xl shadow-emerald-500/30"
-                : "bg-gradient-to-br from-emerald-500/10 to-teal-500/10 text-emerald-600 dark:text-emerald-400 group-hover:from-emerald-500/20 group-hover:to-teal-500/20 group-hover:scale-105",
+                ? "bg-gradient-to-br from-blue-500 to-indigo-600 text-white scale-110 shadow-xl shadow-blue-500/30"
+                : "bg-gradient-to-br from-blue-500/10 to-indigo-500/10 text-blue-600 dark:text-blue-400 group-hover:from-blue-500/20 group-hover:to-indigo-500/20 group-hover:scale-105",
             )}
           >
             <Upload
@@ -138,7 +138,7 @@ export function DropZone({ compact = false }: DropZoneProps) {
 
           <Button
             size="lg"
-            className="mb-6 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all border-0"
+            className="mb-6 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all border-0"
           >
             <Sparkles className="w-4 h-4 mr-2" suppressHydrationWarning />
             Select Images

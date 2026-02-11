@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { ConverterPage } from "@/components/converter-page";
 
 export const metadata: Metadata = {
-  title: "Free Online JPG to PNG Converter - Privacy Focused | HushPixel",
+  title: "Free Online JPG to PNG Converter - Privacy Focused | MorphIMG",
   description:
     "Convert JPG to PNG with transparency support. 100% private browser-based conversion. No file uploads, no registration required.",
   keywords:

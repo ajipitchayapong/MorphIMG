@@ -32,9 +32,8 @@ export default function Home() {
               <div className="text-center mb-8">
                 <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-foreground mb-3 text-balance">
                   Convert images instantly.
-                  <br />
-                  <span className="bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent">
-                    100% private.
+                  <span className="block mt-2 bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent">
+                    Browser-Based
                   </span>
                 </h1>
                 <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto text-balance">

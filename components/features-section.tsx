@@ -47,7 +47,7 @@ export function FeaturesSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-semibold text-foreground mb-4 text-balance">
-            Why choose HushPixel?
+            Why choose MorphIMG?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-balance">
             Built for professionals who value privacy and efficiency. No
@@ -59,11 +59,11 @@ export function FeaturesSection() {
           {features.map((feature, index) => (
             <div
               key={feature.title}
-              className="bg-card border border-border rounded-xl p-6 hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/5 transition-all group"
+              className="bg-card border border-border rounded-xl p-6 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/5 transition-all group"
             >
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 group-hover:from-emerald-500/20 group-hover:to-teal-500/20 rounded-xl flex items-center justify-center mb-4 transition-colors">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500/10 to-indigo-500/10 group-hover:from-blue-500/20 group-hover:to-indigo-500/20 rounded-xl flex items-center justify-center mb-4 transition-colors">
                 <feature.icon
-                  className="w-6 h-6 text-emerald-600 dark:text-emerald-400"
+                  className="w-6 h-6 text-blue-600 dark:text-blue-400"
                   suppressHydrationWarning
                 />
               </div>

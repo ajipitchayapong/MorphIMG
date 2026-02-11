@@ -327,7 +327,7 @@ export function ConversionSettings() {
                         "text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1",
                         settings.targetFileSize
                           ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
-                          : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+                          : "bg-blue-500/10 text-blue-600 dark:text-blue-400",
                       )}
                     >
                       <span className="opacity-70 uppercase tracking-tighter">
@@ -363,7 +363,7 @@ export function ConversionSettings() {
                 <div className="flex justify-between text-[10px] text-muted-foreground">
                   <span>Smaller File</span>
                   {settings.quality === 100 ? (
-                    <span className="text-emerald-500 font-bold animate-pulse">
+                    <span className="text-blue-500 font-bold animate-pulse">
                       Maximum Quality
                     </span>
                   ) : (
@@ -454,7 +454,7 @@ export function ConversionSettings() {
                                   ? 1024 * 1024
                                   : 1024)
                               ? "text-amber-500"
-                              : "text-emerald-500",
+                              : "text-blue-500",
                           )}
                         >
                           {formatFileSize(estimatedSize)}
@@ -554,10 +554,10 @@ export function ConversionSettings() {
                         variant={isActive ? "default" : "outline"}
                         size="sm"
                         className={cn(
-                          "h-auto py-2 flex flex-col gap-0.5 transition-all duration-200 border-emerald-500/20",
+                          "h-auto py-2 flex flex-col gap-0.5 transition-all duration-200 border-blue-500/20",
                           isActive
-                            ? "shadow-md scale-[1.02] bg-gradient-to-br from-emerald-500 to-teal-600 border-0 text-white"
-                            : "hover:border-emerald-500/50 hover:bg-emerald-500/5",
+                            ? "shadow-md scale-[1.02] bg-gradient-to-br from-blue-500 to-indigo-600 border-0 text-white"
+                            : "hover:border-blue-500/50 hover:bg-blue-500/5",
                         )}
                         onClick={() => {
                           if (isActive) {
@@ -704,7 +704,7 @@ export function ConversionSettings() {
                           : null,
                       })
                     }
-                    className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-emerald-500 data-[state=checked]:to-teal-600"
+                    className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-blue-500 data-[state=checked]:to-indigo-600"
                   />
                 </div>
               </div>

@@ -53,7 +53,7 @@ export function FormatsSection() {
 
             {/* Arrow */}
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
                 <ArrowRight
                   className="w-6 h-6 text-white"
                   suppressHydrationWarning
@@ -70,7 +70,7 @@ export function FormatsSection() {
                 {filteredOutputFormats.map((format) => (
                   <span
                     key={format}
-                    className="px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-lg text-sm font-medium shadow-lg shadow-emerald-500/20"
+                    className="px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg text-sm font-medium shadow-lg shadow-blue-500/20"
                   >
                     {format}
                   </span>

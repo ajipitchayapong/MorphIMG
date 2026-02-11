@@ -1,14 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#059669;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0d9488;stop-opacity:1" />
+    <linearGradient id="blueMWaveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <!-- Main Pixelated H shape representing 'Hush' and 'Pixel' -->
-  <path d="M8 6h4v20H8V6z" fill="url(#grad)"/>
-  <path d="M20 6h4v20h-4V6z" fill="url(#grad)"/>
-  <path d="M12 14h8v4h-8v-4z" fill="url(#grad)"/>
-  <!-- Decorative small pixel for the 'Hush' (quiet/dot) aspect -->
-  <rect x="14" y="22" width="4" height="4" fill="url(#grad)" opacity="0.6"/>
+  <path d="M8 32 C8 15 12 8 16 18" fill="none" stroke="url(#blueMWaveGrad)" stroke-width="4" stroke-linecap="round" opacity="0.9" />
+  <path d="M16 18 C20 28 24 35 28 15" fill="none" stroke="url(#blueMWaveGrad)" stroke-width="4" stroke-linecap="round" opacity="0.7" />
+  <path d="M28 15 C32 5 35 15 35 32" fill="none" stroke="url(#blueMWaveGrad)" stroke-width="4" stroke-linecap="round" opacity="0.5" />
 </svg>

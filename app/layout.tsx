@@ -4,19 +4,20 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { CookieConsent } from "@/components/cookie-consent";
+import { AnalyticsWrapper } from "@/components/analytics-wrapper";
+import { KofiButton } from "@/components/kofi-button";
+import { FeedbackButton } from "@/components/feedback-button";
 
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hushpixel.com"),
+  metadataBase: new URL("https://morphimg.com"),
   title: {
-    default: "HushPixel - Free Online Image Converter | Privacy First",
-    template: "%s | HushPixel",
+    default: "MorphIMG - Free Online Image Converter | Privacy First",
+    template: "%s | MorphIMG",
   },
   description:
     "Convert images instantly in your browser. 100% private - no uploads to servers. Support for HEIC, AVIF, JXL, PNG, JPG, WEBP and more. Unlimited file size, unlimited conversions.",
@@ -31,9 +32,9 @@ export const metadata: Metadata = {
     "secure image converter",
     "free image converter",
   ],
-  authors: [{ name: "HushPixel Team" }],
-  creator: "HushPixel",
-  publisher: "HushPixel",
+  authors: [{ name: "MorphIMG Team" }],
+  creator: "MorphIMG",
+  publisher: "MorphIMG",
   formatDetection: {
     email: false,
     address: false,
@@ -42,23 +43,23 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://hushpixel.com",
-    title: "HushPixel - Free Online Image Converter | Privacy First",
+    url: "https://morphimg.com",
+    title: "MorphIMG - Free Online Image Converter | Privacy First",
     description:
       "Convert images instantly in your browser. 100% private - no uploads to servers. Support for HEIC, AVIF, JXL, PNG, JPG, WEBP and more.",
-    siteName: "HushPixel",
+    siteName: "MorphIMG",
     images: [
       {
         url: "/og-image.jpg", // We should probably add an OG image later
         width: 1200,
         height: 630,
-        alt: "HushPixel - privacy first image converter",
+        alt: "MorphIMG - privacy first image converter",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "HushPixel - Free Online Image Converter | Privacy First",
+    title: "MorphIMG - Free Online Image Converter | Privacy First",
     description:
       "Convert images instantly in your browser. 100% private - no uploads to servers.",
     images: ["/og-image.jpg"], // Same as OG
@@ -98,7 +99,7 @@ export default function RootLayout({
               __html: JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "WebApplication",
-                name: "HushPixel",
+                name: "MorphIMG",
                 url: "https://securepixel.com",
                 description:
                   "Convert images instantly in your browser. 100% private - no uploads to servers.",
@@ -119,11 +120,11 @@ export default function RootLayout({
             src="https://cdn.jsdelivr.net/npm/heic-to@1.4.2/dist/iife/heic-to.js"
             strategy="beforeInteractive"
           />
-          <Analytics />
-          <SpeedInsights />
-          {process.env.NEXT_PUBLIC_GA_ID && (
-            <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-          )}
+          <Toaster />
+          <AnalyticsWrapper />
+          <CookieConsent />
+          <KofiButton />
+          <FeedbackButton />
         </ThemeProvider>
       </body>
     </html>

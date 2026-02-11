@@ -1,6 +1,6 @@
 "use client";
 
-import { Shield, Heart } from "lucide-react";
+import { Shield, Heart, Coffee } from "lucide-react";
 
 export function Footer() {
   return (
@@ -8,19 +8,16 @@ export function Footer() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-500/20">
+            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/20">
               <svg
                 viewBox="0 0 32 32"
                 className="w-5 h-5 text-white fill-current"
                 suppressHydrationWarning
               >
-                <path d="M8 6h4v20H8V6z" />
-                <path d="M20 6h4v20h-4V6z" />
-                <path d="M12 14h8v4h-8v-4z" />
-                <rect x="14" y="22" width="4" height="4" opacity="0.6" />
+                <path d="M4 26V6h6l6 9 6-9h6v20h-5V12l-7 10.5-7-10.5V26H4z" />
               </svg>
             </div>
-            <span className="font-semibold text-foreground">HushPixel</span>
+            <span className="font-semibold text-foreground">MorphIMG</span>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground">

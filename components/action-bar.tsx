@@ -71,14 +71,14 @@ export function ActionBar() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Loader2
-                    className="w-4 h-4 animate-spin text-emerald-500"
+                    className="w-4 h-4 animate-spin text-blue-500"
                     suppressHydrationWarning
                   />
-                  <span className="text-sm font-bold bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">
+                  <span className="text-sm font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
                     Processing Your Images...
                   </span>
                 </div>
-                <span className="text-[10px] font-black text-emerald-600/80 dark:text-emerald-400/80 tabular-nums">
+                <span className="text-[10px] font-black text-blue-600/80 dark:text-blue-400/80 tabular-nums">
                   {Math.round(progress)}%
                 </span>
               </div>
@@ -91,7 +91,7 @@ export function ActionBar() {
                 aria-valuemax={100}
               >
                 <div
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-emerald-400 via-teal-500 to-emerald-400 animate-gradient-x transition-all duration-300 ease-linear"
+                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-400 via-indigo-500 to-blue-400 animate-gradient-x transition-all duration-300 ease-linear"
                   style={{ width: `${Math.min(progress, 100)}%` }}
                 >
                   <div className="absolute inset-0 animate-shimmer opacity-40" />
@@ -104,14 +104,14 @@ export function ActionBar() {
             </div>
           ) : allDone ? (
             <div className="flex items-center gap-3 animate-in fade-in zoom-in-95 duration-500">
-              <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center">
                 <CheckCircle2
-                  className="w-5 h-5 text-emerald-500"
+                  className="w-5 h-5 text-blue-500"
                   suppressHydrationWarning
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
                   Success! Conversion Complete
                 </span>
                 {totalSavings > 0 && (
@@ -150,7 +150,7 @@ export function ActionBar() {
               onClick={handleConvert}
               disabled={!canConvert}
               size="lg"
-              className="flex-1 sm:flex-none h-11 px-6 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all border-0 font-bold group"
+              className="flex-1 sm:flex-none h-11 px-6 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.98] transition-all border-0 font-bold group"
             >
               <Zap
                 className="w-4 h-4 mr-2 group-hover:animate-pulse"
@@ -168,8 +168,8 @@ export function ActionBar() {
               className={cn(
                 "flex-1 sm:flex-none h-11 px-6 transition-all duration-300 font-bold",
                 allDone
-                  ? "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shadow-lg shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] border-0"
-                  : "bg-transparent border-emerald-500/30 hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+                  ? "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/20 hover:scale-[1.02] active:scale-[0.98] border-0"
+                  : "bg-transparent border-blue-500/30 hover:bg-blue-500/10 text-blue-600 dark:text-blue-400",
               )}
             >
               {completedFiles.length > 1 ? (

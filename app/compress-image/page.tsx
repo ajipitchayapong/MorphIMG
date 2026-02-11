@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { ConverterPage } from "@/components/converter-page";
 
 export const metadata: Metadata = {
-  title: "Free Online Image Compressor - Privacy Focused | HushPixel",
+  title: "Free Online Image Compressor - Privacy Focused | MorphIMG",
   description:
     "Compress images to any target file size. 100% private - no uploads. Supports JPG, PNG, WebP. Perfect for email attachments and web uploads.",
   keywords:

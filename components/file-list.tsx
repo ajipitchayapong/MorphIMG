@@ -74,8 +74,8 @@ export function FileList() {
                 className={cn(
                   "w-4 h-4 rounded border flex items-center justify-center cursor-pointer transition-colors",
                   allSelected
-                    ? "bg-emerald-500 border-emerald-500 text-white"
-                    : "bg-background border-border hover:border-emerald-500",
+                    ? "bg-blue-500 border-blue-500 text-white"
+                    : "bg-background border-border hover:border-blue-500",
                 )}
               >
                 {allSelected && <Check className="w-3 h-3" strokeWidth={3} />}
@@ -83,7 +83,7 @@ export function FileList() {
             )}
             <h3 className="font-medium text-foreground text-sm">
               {selectedFileIds.length > 0 ? (
-                <span className="text-emerald-500 font-bold">
+                <span className="text-blue-500 font-bold">
                   {selectedFileIds.length} selected
                 </span>
               ) : (
@@ -121,14 +121,14 @@ export function FileList() {
                 "group relative flex items-center gap-3 p-3 transition-all",
                 totalCount > 1 && "cursor-pointer",
                 isSelected && totalCount > 1
-                  ? "bg-emerald-500/[0.08] dark:bg-emerald-500/[0.12] shadow-inner"
+                  ? "bg-blue-500/[0.08] dark:bg-blue-500/[0.12] shadow-inner"
                   : "hover:bg-muted/40",
                 file.status === "error" && "bg-destructive/5",
               )}
             >
               {/* Selection Indicator Bar */}
               {isSelected && totalCount > 1 && (
-                <div className="absolute left-0 top-1.5 bottom-1.5 w-1.5 bg-gradient-to-b from-emerald-400 to-teal-500 rounded-r-full shadow-[2px_0_12px_rgba(16,185,129,0.5)] z-10" />
+                <div className="absolute left-0 top-1.5 bottom-1.5 w-1.5 bg-gradient-to-b from-blue-400 to-indigo-500 rounded-r-full shadow-[2px_0_12px_rgba(59,130,246,0.5)] z-10" />
               )}
               {/* Thumbnail */}
               <div
@@ -153,21 +153,21 @@ export function FileList() {
 
                 {/* Scanning Line */}
                 {file.status === "converting" && (
-                  <div className="absolute top-0 left-0 w-full h-[2px] bg-emerald-400 shadow-[0_0_8px_#34d399] z-20 animate-scan" />
+                  <div className="absolute top-0 left-0 w-full h-[2px] bg-blue-400 shadow-[0_0_8px_#60a5fa] z-20 animate-scan" />
                 )}
 
                 {file.status === "converting" && (
                   <div className="absolute inset-0 bg-background/20 flex items-center justify-center z-30">
                     <Loader2
-                      className="w-5 h-5 animate-spin text-emerald-500"
+                      className="w-5 h-5 animate-spin text-blue-500"
                       suppressHydrationWarning
                     />
                   </div>
                 )}
                 {file.status === "done" && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-indigo-500/20 flex items-center justify-center">
                     <Check
-                      className="w-5 h-5 text-emerald-500"
+                      className="w-5 h-5 text-blue-500"
                       suppressHydrationWarning
                     />
                   </div>
@@ -185,14 +185,14 @@ export function FileList() {
                   </span>
 
                   {file.status === "converting" && (
-                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.25 rounded flex items-center gap-1 animate-pulse">
+                    <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-1.5 py-0.25 rounded flex items-center gap-1 animate-pulse">
                       <Loader2 className="w-2.5 h-2.5 animate-spin" />
                       Converting
                     </span>
                   )}
 
                   {file.status === "done" && (
-                    <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.25 rounded">
+                    <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-1.5 py-0.25 rounded">
                       Done
                     </span>
                   )}
@@ -223,7 +223,7 @@ export function FileList() {
                     </span>
                   )}
 
-                  <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-1.5 py-0.25 rounded flex items-center gap-1">
+                  <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-500/10 px-1.5 py-0.25 rounded flex items-center gap-1">
                     <span className="opacity-70 uppercase tracking-tighter text-[8px]">
                       Quality
                     </span>
@@ -248,7 +248,7 @@ export function FileList() {
                         {formatFileSize(file.convertedSize)}
                       </span>
                       {savings > 0 && (
-                        <span className="text-emerald-600 dark:text-emerald-400 font-medium">
+                        <span className="text-blue-600 dark:text-blue-400 font-medium">
                           (-{savings}%)
                         </span>
                       )}
@@ -267,7 +267,7 @@ export function FileList() {
                     variant="ghost"
                     size="icon"
                     onClick={() => handleDownloadSingle(file)}
-                    className="h-8 w-8 text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-500/10"
+                    className="h-8 w-8 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-500/10"
                   >
                     <Download className="w-4 h-4" suppressHydrationWarning />
                   </Button>
