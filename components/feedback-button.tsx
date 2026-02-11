@@ -91,7 +91,7 @@ export function FeedbackButton() {
           <form onSubmit={handleSubmit} className="space-y-4 pt-4">
             <div className="space-y-2">
               <Input
-                name="email"
+                name="Sender_Email"
                 type="email"
                 placeholder="Email (optional)"
                 className="bg-muted/30 border-blue-500/10 focus-visible:ring-blue-500"
@@ -99,7 +99,7 @@ export function FeedbackButton() {
             </div>
             <div className="space-y-2">
               <Textarea
-                name="message"
+                name="Feedback_Contents"
                 placeholder="How can we improve MorphIMG?"
                 className="min-h-[120px] bg-muted/30 border-blue-500/10 focus-visible:ring-blue-500 resize-none"
                 required
@@ -108,7 +108,13 @@ export function FeedbackButton() {
             <input
               type="hidden"
               name="_subject"
-              value="New Feedback from MorphIMG"
+              value="🚀 New Feedback from MorphIMG"
+            />
+            <input type="hidden" name="_template" value="table" />
+            <input
+              type="hidden"
+              name="Source_Site"
+              value="MorphIMG (ajioh.com)"
             />
             <input type="hidden" name="_honey" style={{ display: "none" }} />
             <Button
