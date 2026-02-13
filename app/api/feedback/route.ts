@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
     const data = await resend.emails.send({
       from: "MorphIMG Feedback <onboarding@resend.dev>",
-      to: "saelim.aji@gmail.com",
+      to: process.env.FEEDBACK_RECIPIENT_EMAIL || "saelim.aji@gmail.com",
       subject: "🚀 New Premium Feedback: MorphIMG",
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #334155; border-radius: 20px; background-color: #0f172a; color: #f1f5f9;">
