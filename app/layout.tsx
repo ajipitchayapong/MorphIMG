@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s | MorphIMG",
   },
   description:
-    "Convert images instantly in your browser. 100% private - no uploads to servers. Support for HEIC, AVIF, JXL, PNG, JPG, WEBP and more. Unlimited file size, unlimited conversions.",
+    "Convert images instantly in your browser. 100% private - no uploads to servers. Support for HEIC, AVIF, PNG, JPG, WEBP and more. Unlimited file size, unlimited conversions.",
   keywords: [
     "image converter",
     "HEIC to JPG",
@@ -35,7 +35,6 @@ export const metadata: Metadata = {
     "แปลง HEIC",
     "ลดขนาดไฟล์ภาพ",
     "แปลงไฟล์ AVIF",
-    "แปลงไฟล์ JXL",
   ],
   authors: [{ name: "MorphIMG Team" }],
   creator: "MorphIMG",
@@ -51,7 +50,7 @@ export const metadata: Metadata = {
     url: "https://morph-img.vercel.app",
     title: "MorphIMG - Free Online Image Converter | Privacy First",
     description:
-      "Convert images instantly in your browser. 100% private - no uploads to servers. Support for HEIC, AVIF, JXL, PNG, JPG, WEBP and more.",
+      "Convert images instantly in your browser. 100% private - no uploads to servers. Support for HEIC, AVIF, PNG, JPG, WEBP and more.",
     siteName: "MorphIMG",
     images: [
       {
@@ -119,7 +118,7 @@ export default function RootLayout({
                   priceCurrency: "USD",
                 },
                 featureList:
-                  "Convert HEIC, AVIF, JXL, PNG, JPG, WEBP; Compress images; Resize images; Offline capable",
+                  "Convert HEIC, AVIF, PNG, JPG, WEBP; Compress images; Resize images; Offline capable",
               }),
             }}
           />

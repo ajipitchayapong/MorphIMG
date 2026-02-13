@@ -7,7 +7,7 @@ MorphIMG is a free, open-source, and privacy-focused image converter that works 
 ## 🚀 Key Features
 
 - **100% Local Processing**: All conversions happen on your device using WebAssembly. Your images never leave your computer.
-- **Wide Format Support**: Convert between HEIC, AVIF, JXL, PNG, JPG, WEBP, and more.
+- **Wide Format Support**: Convert between HEIC, AVIF, PNG, JPG, WEBP, and more.
 - **Privacy-First**: No tracking, no data collection, and strictly local processing.
 - **No Limits**: Unlimited file size and unlimited conversions.
 - **Modern UI**: Clean, responsive design with dark mode support.
