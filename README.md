@@ -20,6 +20,9 @@ MorphIMG is a free, open-source, and privacy-focused image converter that works 
 - **State Management**: Zustand
 - **Deployment**: Vercel
 
+> [!NOTE]
+> **AI-Assisted Development**: This project was developed primarily using AI assistance (Antigravity by Google DeepMind) to demonstrate the power of agentic coding and modern AI tools.
+
 ## 📦 Getting Started
 
 ### Prerequisites
