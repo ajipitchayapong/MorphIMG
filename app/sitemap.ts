@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://securepixel.com";
+  const baseUrl = "https://morph-img.vercel.app";
 
   return [
     {

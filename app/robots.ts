@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://securepixel.com/sitemap.xml",
+    sitemap: "https://morph-img.vercel.app/sitemap.xml",
   };
 }

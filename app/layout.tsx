@@ -14,7 +14,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://morphimg.com"),
+  metadataBase: new URL("https://morph-img.vercel.app"),
   title: {
     default: "MorphIMG - Free Online Image Converter | Privacy First",
     template: "%s | MorphIMG",
@@ -31,6 +31,11 @@ export const metadata: Metadata = {
     "offline converter",
     "secure image converter",
     "free image converter",
+    "แปลงไฟล์ภาพ",
+    "แปลง HEIC",
+    "ลดขนาดไฟล์ภาพ",
+    "แปลงไฟล์ AVIF",
+    "แปลงไฟล์ JXL",
   ],
   authors: [{ name: "MorphIMG Team" }],
   creator: "MorphIMG",
@@ -43,7 +48,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://morphimg.com",
+    url: "https://morph-img.vercel.app",
     title: "MorphIMG - Free Online Image Converter | Privacy First",
     description:
       "Convert images instantly in your browser. 100% private - no uploads to servers. Support for HEIC, AVIF, JXL, PNG, JPG, WEBP and more.",
@@ -65,7 +70,7 @@ export const metadata: Metadata = {
     images: ["/og-image.jpg"], // Same as OG
   },
   alternates: {
-    canonical: "/",
+    canonical: "https://morph-img.vercel.app",
   },
   icons: {
     icon: "/favicon.svg",
@@ -100,7 +105,7 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "WebApplication",
                 name: "MorphIMG",
-                url: "https://securepixel.com",
+                url: "https://morph-img.vercel.app",
                 description:
                   "Convert images instantly in your browser. 100% private - no uploads to servers.",
                 applicationCategory: "MultimediaApplication",
