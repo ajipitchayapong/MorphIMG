@@ -77,6 +77,9 @@ export const metadata: Metadata = {
     apple: "/favicon.svg",
   },
   manifest: "/manifest.webmanifest",
+  verification: {
+    google: "nufftxSA57DUY2OiZpyuAc4OhgUHZP-bLJn6chIOrhU",
+  },
 };
 
 export const viewport: Viewport = {
