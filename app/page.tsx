@@ -9,6 +9,7 @@ import { FeaturesSection } from "@/components/features-section";
 import { FormatsSection } from "@/components/formats-section";
 import { Footer } from "@/components/footer";
 import { UserGuidelines } from "@/components/user-guidelines";
+import { StatsSection } from "@/components/stats-section";
 import { useImageStore } from "@/lib/image-store";
 import { useEffect } from "react";
 
@@ -70,6 +71,7 @@ export default function Home() {
 
         {!hasFiles && (
           <>
+            <StatsSection />
             <FeaturesSection />
             <FormatsSection />
           </>

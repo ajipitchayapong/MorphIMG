@@ -445,6 +445,26 @@ export const convertImages = async (): Promise<void> => {
 
   await Promise.all(workers);
 
+  // Increment global processed counter after conversion batch
+  try {
+    const namespace = process.env.NEXT_PUBLIC_STATS_NAMESPACE || "morphimg";
+    const processedCount = pendingFiles.length;
+    // We increment by the number of files converted in this batch
+    // counterapi.dev supports incrementing by a specific value
+    fetch(
+      `https://api.counterapi.dev/v1/${namespace}/processed/increment?amount=${processedCount}`,
+    ).catch(() => {});
+
+    // Also track locally for fallback
+    const storedP = localStorage.getItem("m_p_real") || "0";
+    localStorage.setItem(
+      "m_p_real",
+      (parseInt(storedP) + processedCount).toString(),
+    );
+  } catch (e) {
+    // ignore
+  }
+
   setIsConverting(false);
 };
 
